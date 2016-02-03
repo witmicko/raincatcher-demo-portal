@@ -14,6 +14,7 @@ angular.module('app', [
 , require('fh-wfm-mediator')
 , require('fh-wfm-workorder')
 , require('fh-wfm-result')
+, require('fh-wfm-message')
 , require('fh-wfm-workflow')
 , require('fh-wfm-appform')
 , require('fh-wfm-user')
@@ -47,6 +48,9 @@ angular.module('app', [
       resolve: {
         workorderManager: function(workorderSync) {
           return workorderSync.createManager();
+        },
+        messageManager: function(messageSync) {
+          return messageSync.createManager();
         },
         profileData: function(userClient) {
           return userClient.getProfile();
