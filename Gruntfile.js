@@ -44,6 +44,11 @@ module.exports = function (grunt) {
           {cwd: 'node_modules/', src: ['angular-material/angular-material.css', 'patternfly/dist/css/patternfly.css', 'c3/c3.css'], dest: '<%= app.dist %>/css/', expand: true, flatten: true },
           {cwd: 'node_modules/patternfly/dist/', src: 'fonts/**/*.*', dest: '<%= app.dist %>/', expand: true },
         ]
+      },
+      js: {
+        files: [
+          {cwd: 'node_modules/', src: ['d3/d3.min.js'], dest: '<%= app.dist %>/lib/', expand: true, flatten: true }
+        ]
       }
     },
 

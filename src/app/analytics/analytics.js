@@ -5,7 +5,7 @@
 **/
 'use strict';
 
-var d3 = require('d3')
+// var d3 = require('d3')
 var c3 = require('c3')
 var _ = require('lodash');
 
