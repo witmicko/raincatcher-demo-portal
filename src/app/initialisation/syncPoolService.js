@@ -8,20 +8,14 @@ var config = require('../config.json');
  * Service to manage initialising and removing synchronisation processes for:
  *
  * - workorders
- * - workflows
- * - messages
- * - workflow results
  *
  * @param $q
  * @param mediator
  * @param workorderSync
- * @param workflowSync
- * @param resultSync
- * @param messageSync
  * @param syncService
  * @returns {{}}
  */
-function SyncPoolService($q, mediator, workorderSync, workflowSync, resultSync, messageSync, syncService) {
+function SyncPoolService($q, mediator, workorderSync, syncService) {
   var syncPool = {};
 
   //Initialising the sync service - This is the global initialisation
@@ -30,24 +24,18 @@ function SyncPoolService($q, mediator, workorderSync, workflowSync, resultSync, 
   syncPool.removeManagers = function() {
     var promises = [];
     promises.push(workorderSync.removeManager());
-    promises.push(workflowSync.removeManager());
     return $q.all(promises);
   };
 
-  syncPool.syncManagerMap = function(profileData) {
+  syncPool.syncManagerMap = function() {
 
     //If there is no user profile, don't initialise any of the sync managers.
-    if (! profileData) {
-      return $q.when({});
-    }
     var promises = [];
     // add any additonal manager creates here
     promises.push(workorderSync.createManager());
-    promises.push(workflowSync.createManager());
 
     //Initialising the sync managers for the required datasets.
     return syncService.manage(config.datasetIds.workorders, {}, {}, config.syncOptions)
-      .then(syncService.manage(config.datasetIds.workflows, {}, {}, config.syncOptions))
       .then(function() {
         return $q.all(promises).then(function(managers) {
           var map = {};
@@ -78,4 +66,4 @@ function SyncPoolService($q, mediator, workorderSync, workflowSync, resultSync, 
   return syncPool;
 }
 
-angular.module('app').service('syncPool', ["$q", "mediator", "workorderSync", "workflowSync", "syncService", SyncPoolService]);
+angular.module('app').service('syncPool', ["$q", "mediator", "workorderSync", "syncService", SyncPoolService]);

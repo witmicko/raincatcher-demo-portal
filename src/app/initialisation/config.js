@@ -8,9 +8,7 @@ var angular = require('angular');
  * This script sets up the resolvers for the sync managers used to manage:
  *
  * - workorders
- * - workflows
  * - messages
- * - workflow results
  *
  * @param $stateProvider
  * @param $urlRouterProvider
@@ -27,19 +25,15 @@ function AppConfig($stateProvider, $urlRouterProvider) {
         columns: 3
       },
       resolve: {
-        syncManagers: function(syncPool, profileData) {
-          console.log('>>>>>', profileData);
-          return syncPool.syncManagerMap(profileData);
+        syncManagers: function(syncPool) {
+          console.log('>>>>>');
+          return syncPool.syncManagerMap();
         },
         workorderManager: function(syncManagers) {
           return syncManagers.workorders;
-        },
-        workflowManager: function(syncManagers) {
-          return syncManagers.workflows;
         }
       },
-      controller: function($scope, $state, $mdSidenav, mediator, profileData) {
-        $scope.profileData = profileData;
+      controller: function($scope, $state, $mdSidenav, mediator) {
         $scope.$state = $state;
         $scope.toggleSidenav = function(event, menuId) {
           $mdSidenav(menuId).toggle();
