@@ -27,10 +27,8 @@ function AppConfig($stateProvider, $urlRouterProvider) {
         columns: 3
       },
       resolve: {
-        profileData: function(userClient) {
-          return userClient.getProfile();
-        },
         syncManagers: function(syncPool, profileData) {
+          console.log('>>>>>', profileData);
           return syncPool.syncManagerMap(profileData);
         },
         workorderManager: function(syncManagers) {
@@ -38,12 +36,6 @@ function AppConfig($stateProvider, $urlRouterProvider) {
         },
         workflowManager: function(syncManagers) {
           return syncManagers.workflows;
-        },
-        resultManager: function(syncManagers) {
-          return syncManagers.result;
-        },
-        messageManager: function(syncManagers) {
-          return syncManagers.messages;
         }
       },
       controller: function($scope, $state, $mdSidenav, mediator, profileData) {

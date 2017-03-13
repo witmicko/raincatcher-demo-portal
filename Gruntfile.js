@@ -97,10 +97,10 @@ module.exports = function (grunt) {
         src: ['.'],
         dest: '<%= app.dist %>/app/vendor.js',
         options: {
-          debug: false,
+          debug: true,
           alias: browserifyConfg.vendor,
           transform: [
-            [uglifyify, {global: true}]
+            // [uglifyify, {global: true}]
           ]
         }
       }

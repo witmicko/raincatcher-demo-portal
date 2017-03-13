@@ -2,33 +2,7 @@ var angular = require('angular');
 
 var workorderCoreModule = require('fh-wfm-workorder/lib/client');
 
-/**
- * Script to subscribe to the `wfm:auth:profile:change` topic.
- *
- * This will check to see if a user is logging in or out.
- *
- * @param $state
- * @param mediator
- * @param syncPool
- * @constructor
- */
-function subscribeToUserChange($state, mediator, syncPool) {
-  mediator.subscribe('wfm:auth:profile:change', function(_profileData) {
-    if (_profileData === null) { // a logout
-      syncPool.removeManagers().then(function() {
-        $state.go('app.login', undefined, {reload: true});
-      }, function(err) {
-        console.err(err);
-      });
-    } else {
-      syncPool.syncManagerMap(_profileData)  // created managers will be cached
-        .then(syncPool.forceSync)
-        .then(function() {
-          $state.go('app.schedule', undefined, {reload: true});
-        });
-    }
-  });
-}
+
 
 /**
  *
@@ -71,19 +45,20 @@ function createWFMInitialisationPromises($rootScope, $q, mediator, userClient) {
  */
 function verifyLoginOnStateChange($rootScope, $state, userClient) {
 
-  $rootScope.$on('$stateChangeStart', function(e, toState, toParams) {
-    //Verifying that the logged in user has a session before showing any other screens but the login.
-    if (toState.name !== "app.login") {
-      userClient.hasSession().then(function(hasSession) {
-        if (!hasSession) {
-          e.preventDefault();
-          $rootScope.toState = toState;
-          $rootScope.toParams = toParams;
-          $state.go('app.login');
-        }
-      });
-    }
-  });
+  // $rootScope.$on('$stateChangeStart', function(e, toState, toParams) {
+  //   //Verifying that the logged in user has a session before showing any other screens but the login.
+  //   if (toState.name !== "app.login") {
+  //     userClient.hasSession().then(function(hasSession) {
+  //       if (!hasSession) {
+  //         e.preventDefault();
+  //         $rootScope.toState = toState;
+  //         $rootScope.toParams = toParams;
+  //         $state.go('app.login');
+  //       }
+  //     });
+  //   }
+  // });
+
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
     console.error('State change error: ', error, {
       event: event,
