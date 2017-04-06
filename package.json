@@ -33,6 +33,7 @@
     "body-parser": "1.17.1",
     "c3": "0.4.11",
     "config-chain": "1.1.10",
+    "debug": "2.6.3",
     "d3": "3.5.16",
     "fh-js-sdk": "2.18.4",
     "fh-wfm-analytics": "0.0.9",
